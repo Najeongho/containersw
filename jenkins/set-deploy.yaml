@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+ 
+kind: Deployment
+ 
+metadata:
+ 
+  name: jenkins
+ 
+  labels:
+ 
+    app: jenkins
+ 
+spec:
+ 
+  selector:
+ 
+    matchLabels:
+ 
+      app: jenkins
+ 
+  replicas: 1
+ 
+  template:
+ 
+    metadata:
+ 
+      labels:
+ 
+        app: jenkins
+ 
+    spec:
+ 
+      containers:
+ 
+      - name: jenkins
+ 
+        image: jenkins
+ 
+        volumeMounts:
+ 
+        - mountPath: /var/jenkins_home
+ 
+          name: volume
+ 
+      volumes:
+ 
+      - name: volume
+ 
+        persistentVolumeClaim:
+ 
+          claimName: jenkins-pvc
+ 
+      initContainers:
+ 
+      - name: permissionsfix
+ 
+        image: alpine:latest
+ 
+        command: ["/bin/sh", "-c"]
+ 
+        args:
+ 
+          - chown 1000:1000 /mount;
+ 
+        volumeMounts:
+ 
+        - name: volume
+ 
+          mountPath: /mount
