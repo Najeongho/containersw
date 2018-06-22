@@ -1,0 +1,24 @@
+{
+  "apiVersion": "v1",
+  "kind": "Service",
+  "metadata": {
+    "name": "pgbackend",
+    "namespace": "serverless-console",
+    "labels": {
+      "app": "pgbackend"
+    }
+  },
+  "spec": {
+    "ports": [
+      {
+        "protocol": "TCP",
+        "port": 5432,
+        "name": "web"
+      }
+    ],
+    "type": "NodePort",
+    "selector": {
+      "app": "pgbackend"
+    }
+  }
+}
